@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class UserRequestDTO implements Serializable {
 
-    private int user_id;
+   // private int user_id;
     private String first_name;
     private String last_name;
     private String username;
@@ -13,13 +13,13 @@ public class UserRequestDTO implements Serializable {
     private float wallet;
     private String password;
 
-    public int getUser_id() {
+/*    public int getUser_id() {
         return user_id;
     }
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
-    }
+    }*/
 
     public String getFirst_name() {
         return first_name;

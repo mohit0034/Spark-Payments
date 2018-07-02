@@ -72,7 +72,6 @@ public class UserDO {
         this.last_name = user.getLast_name();
         this.username = user.getUsername();
         this.phone = user.getPhone();
-        this.wallet = user.getWallet();
         this.password = user.getPassword();
     }
     public UserDO(){}

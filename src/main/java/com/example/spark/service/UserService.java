@@ -47,20 +47,22 @@ public class UserService {
         userDO.setPassword(password);
         userDO.setWallet(200);
         userDO = userdao.insertUser(userDO);
+
         userdto.setWallet(200);
         UserResponseDTO userResponseDTO = new UserResponseDTO(userdto);
         return userResponseDTO;
     }
 
     @Transactional
-    public UserResponseDTO updateUser(UserRequestDTO userdto)
+    public UserResponseDTO updateUser(UserRequestDTO userdto, String token)
     {
         UserDO userDO = new UserDO(userdto);
-        try{userDO.setId(userdao.getUserIdByName(userDO.getUsername()));}catch(RuntimeException re){}
+        /*try{userDO.setId(userdao.getUserIdByName(userDO.getUsername()));}catch(RuntimeException re){}
         if(userDO.getId()!=null)
-        {throw new UserException(userDO.getUsername()+" already registered ",400);}
-        userDO = userdao.updateUser(userDO);
-        userDO.setWallet(userdao.getWallet(userDO.getPhone()));
+        {throw new UserException(userDO.getUsername()+" already registered ",400);}*/
+        userDO = userdao.updateUser(userDO, token);
+        userDO = userdao.getUserByToken(token);
+        userDO.setWallet(userdao.getWallet(token));
         UserResponseDTO userResponseDTO = new UserResponseDTO(userDO);
         return userResponseDTO;
     }

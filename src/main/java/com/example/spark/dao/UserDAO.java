@@ -20,8 +20,9 @@ public class UserDAO {
     }
 
     public UserDO insertUser(UserDO userDO){
+        float wallet = 200;
         String sql="insert into user (first_name,last_name,username,phone,password,wallet) values('" + userDO.getFirst_name()+"','"+ userDO.getLast_name()+
-                "','" + userDO.getUsername()+"','"+ userDO.getPhone()+"','"+ userDO.getPassword()+"'," + userDO.getWallet()+")";
+                "','" + userDO.getUsername()+"','"+ userDO.getPhone()+"','"+ userDO.getPassword() +"',"+wallet+")";
 
         template.execute(sql);
 
@@ -33,10 +34,10 @@ public class UserDAO {
         return template.queryForObject(sql, new Object[]{phone},new BeanPropertyRowMapper<UserDO>(UserDO.class));
     }
 
-    public UserDO updateUser(UserDO userDO)
+    public UserDO updateUser(UserDO userDO, String token)
     {
-        String sql = "update user set first_name =?, last_name = ?, username = ? where phone = ?";
-        template.update(sql,new Object[]{userDO.getFirst_name(), userDO.getLast_name(), userDO.getUsername(), userDO.getPhone()});
+        String sql = "update user set first_name =?, last_name = ? where token = ?";
+        template.update(sql,new Object[]{userDO.getFirst_name(), userDO.getLast_name(), token});
         return userDO;
     }
 

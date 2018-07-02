@@ -44,9 +44,9 @@ public class UserController {
     }
 
     @RequestMapping(value="/{phone}", method = RequestMethod.PUT)
-    public UserResponseDTO updateUser(@RequestBody UserRequestDTO userdto)
+    public UserResponseDTO updateUser(@RequestBody UserRequestDTO userdto,@RequestHeader("token") String token)
     {
-        UserResponseDTO userResponseDTO = userservice.updateUser(userdto);
+        UserResponseDTO userResponseDTO = userservice.updateUser(userdto, token);
         return userResponseDTO;
     }
 
