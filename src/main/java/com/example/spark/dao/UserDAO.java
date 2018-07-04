@@ -123,4 +123,9 @@ public class UserDAO {
         template.execute(sql);
      }
 
+     public UserDO getUserById(int id){
+         String sql="select * from user where id = ?";
+         return template.queryForObject(sql, new Object[]{id},new BeanPropertyRowMapper<UserDO>(UserDO.class));
+     }
+
 }

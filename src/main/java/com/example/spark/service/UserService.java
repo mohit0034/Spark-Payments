@@ -1,6 +1,7 @@
 package com.example.spark.service;
 
 
+import com.example.spark.Utils.UserUtils;
 import com.example.spark.api.dto.request.AddMoneyDTO;
 import com.example.spark.api.dto.request.LogInDTO;
 import com.example.spark.api.dto.request.SendMoneyDTO;
@@ -31,14 +32,18 @@ public class UserService {
     @Autowired
     private UserDAO userdao;
 
+    public void setUserdao(UserDAO userdao) {
+        this.userdao = userdao;
+    }
+
     @Transactional
     public UserResponseDTO insertUser(UserRequestDTO userdto)
     {
         UserDO userDO = new UserDO(userdto);
-        try{userDO.setId(userdao.getUserId(userDO.getPhone()));}catch(RuntimeException re){}
+        try{userDO.setId(userdao.getUserId(userDO.getPhone()));}catch(RuntimeException re){}//to check phone no. already exist or not
         if(userDO.getId()!=null)
         {throw new UserException(userDO.getPhone()+" already registered ",400);}
-        try{userDO.setId(userdao.getUserIdByName(userDO.getUsername()));}catch(RuntimeException re){}
+        try{userDO.setId(userdao.getUserIdByName(userDO.getUsername()));}catch(RuntimeException re){}//to check username already exist or not
         if(userDO.getId()!=null)
         {throw new UserException(userDO.getUsername()+" already registered ",400);}
         String password = userDO.getPassword();
@@ -101,9 +106,10 @@ public class UserService {
        catch(RuntimeException re){ throw new UserException(" Please logIn again ",401);}
        java.sql.Date expDate = userdao.getExpireTime(token);
        java.sql.Date currDate = java.sql.Date.valueOf(LocalDate.from(LocalDate.now()));
-       int check = currDate.compareTo(expDate);
-       if(check==1)
-       {throw new UserException("Please logIn again", 401);}
+       if(currDate.compareTo(expDate)>0)
+       {
+           throw new UserException("Session timed out, please logIn again", 408);
+       }
        UserWalletDTO userWalletDTO = new UserWalletDTO();
        userWalletDTO.setWallet(userdao.getWallet(token));
        return userWalletDTO;
@@ -139,7 +145,8 @@ public class UserService {
            throw new UserException("Session Timed Out, please logIn again", 408);
        }
        UserBankDO userBankDO = userdao.getUserBank(userDO);
-       if(addMoneyDTO.getAmount()<=0){throw new UserException ("Please Enter a valid amount to add", 400);}
+       if(addMoneyDTO.getAmount()<=0){throw new UserException ("Please Enter a vali" +
+               "d amount to add", 400);}
        if(addMoneyDTO.getAmount()>userBankDO.getBalance())
        { throw new UserException("not sufficient bank balance", 400);}
        userdao.addMoney(userDO,addMoneyDTO.getAmount(),userBankDO);
@@ -178,7 +185,7 @@ public class UserService {
    public String logIn(LogInDTO logInDTO)
    {
        UserDO userDO = new UserDO();
-       try{userDO.setId(userdao.getUserIdByName(logInDTO.getUsername()));}catch(RuntimeException re){}
+       userDO.setId(userdao.getUserIdByName(logInDTO.getUsername()));
        if(userDO.getId()==null)
        {throw new UserException("Username or password is incorrect ",401);}
        String password = logInDTO.getPassword();
@@ -191,33 +198,13 @@ public class UserService {
        SecureRandom csprng = new SecureRandom();
        Long salt = csprng.nextLong();
        String key = salt.toString();
-       String token = hmacSha1(password,key);
+       UserUtils userUtils = new UserUtils();
+       String token = userUtils.hmacSha1(password,key);
        java.sql.Date date = new java.sql.Date(1);
        date = java.sql.Date.valueOf(LocalDate.from(LocalDate.now()).plusDays(1));
        userdao.setToken(key,token,date, logInDTO.getUsername());
        return token;
    }
 
-    public  String hmacSha1(String msg, String key) {
-        try {
-            // Get an hmac_sha1 key from the raw key bytes
-            byte[] keyBytes = key.getBytes();
-            SecretKeySpec signingKey = new SecretKeySpec(keyBytes, "HmacSHA256");
 
-            // Get an hmac_sha1 Mac instance and initialize with the signing key
-            Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(signingKey);
-
-            // Compute the hmac on input data bytes
-            byte[] rawHmac = mac.doFinal(msg.getBytes());
-
-            // Convert raw bytes to Hex
-            byte[] hexBytes = new Hex().encode(rawHmac);
-
-            //  Covert array of Hex bytes to a String
-            return new String(hexBytes, "UTF-8");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
