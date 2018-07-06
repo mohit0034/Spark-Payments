@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-    @ExceptionHandler(UserException.class)
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> exceptionHandler (UserException ex){
         ErrorResponse error = new ErrorResponse();
         int code = ex.getError_code();

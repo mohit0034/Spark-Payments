@@ -33,6 +33,10 @@
         <property name="dataSource" ref="dataSource"></property>
     </bean>
 
+    <bean id="UserLoginValidator" class="com.example.spark.api.middleware.uservalidators.UserLoginValidator" />
+    <bean id="CreateUserValidator" class="com.example.spark.api.middleware.uservalidators.CreateUserValidator" />
+    <bean id="AddMoneyValidator" class="com.example.spark.api.middleware.moneyvalidators.AddMoneyValidator" />
+    <bean id="SendMoneyValidator" class="com.example.spark.api.middleware.moneyvalidators.SendMoneyValidator" />
 
 
 </beans>

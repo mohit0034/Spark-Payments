@@ -184,6 +184,7 @@ public class UserService {
    @Transactional
    public String logIn(LogInDTO logInDTO)
    {
+
        UserDO userDO = new UserDO();
        userDO.setId(userdao.getUserIdByName(logInDTO.getUsername()));
        if(userDO.getId()==null)
@@ -191,7 +192,7 @@ public class UserService {
        String password = logInDTO.getPassword();
        String sha256Hex = DigestUtils.sha256Hex(password+logInDTO.getUsername());
        password = sha256Hex;
-       if(password.compareTo(userdao.getPasswordByUsername(logInDTO.getUsername()))!=0)
+       if(password.compareTo(userdao.getPasswordById(userDO.getId()))!=0)
        {
            throw new UserException("Username or password is incorrect ", 401);
        }
@@ -200,11 +201,9 @@ public class UserService {
        String key = salt.toString();
        UserUtils userUtils = new UserUtils();
        String token = userUtils.hmacSha1(password,key);
-       java.sql.Date date = new java.sql.Date(1);
-       date = java.sql.Date.valueOf(LocalDate.from(LocalDate.now()).plusDays(1));
-       userdao.setToken(key,token,date, logInDTO.getUsername());
+       java.sql.Date date = java.sql.Date.valueOf(LocalDate.from(LocalDate.now()).plusDays(1));
+       userdao.setToken(key,token,date, userDO.getId());
        return token;
    }
-
 
 }

@@ -96,10 +96,10 @@ public class UserDAO {
         return template.queryForObject(sql, new Object[]{name}, Integer.class);
     }
 
-    public String getPasswordByUsername(String name)
+    public String getPasswordById(int id)
     {
-        String sql = "select password from user where username = ?";
-        return template.queryForObject(sql, new Object[]{name}, String.class);
+        String sql = "select password from user where id = ?";
+        return template.queryForObject(sql, new Object[]{id}, String.class);
     }
 
     public String getPhone(String name)
@@ -118,8 +118,8 @@ public class UserDAO {
         java.sql.Date date =  template.queryForObject(sql, new Object[]{token}, java.sql.Date.class);
         return date;
     }
-     public void setToken(String key, String token, java.sql.Date date, String username){
-        String sql = "update user set access_key = '"+key+"', token = '" +token+ "', expire_time = '"+ date+"' where username = '"+ username+"'";
+     public void setToken(String key, String token, java.sql.Date date, int id){
+        String sql = "update user set access_key = '"+key+"', token = '" +token+ "', expire_time = '"+ date+"' where id = "+ id +"";
         template.execute(sql);
      }
 

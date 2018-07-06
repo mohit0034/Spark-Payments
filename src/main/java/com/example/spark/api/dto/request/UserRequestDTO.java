@@ -1,16 +1,24 @@
 package com.example.spark.api.dto.request;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class UserRequestDTO implements Serializable {
 
    // private int user_id;
+    @NotNull
     private String first_name;
+    @NotNull
     private String last_name;
+    @NotNull
     private String username;
+    @NotNull
+    @Size(min = 10, max=10)
     private String phone;
     private float wallet;
+    @Size(min = 8)
     private String password;
 
 /*    public int getUser_id() {

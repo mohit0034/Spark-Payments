@@ -1,7 +1,12 @@
 package com.example.spark.api.dto.request;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class LogInDTO {
+    @NotNull
     private String username;
+    @Size(min = 8)
     private String password;
 
     public String getUsername() {
