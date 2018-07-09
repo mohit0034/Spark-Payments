@@ -29,10 +29,10 @@ public class UserDAOTest {
 
     }
 
-    @After
+ /*   @After
     public void tearDown() {
         userDAO.deleteUser(phone);
-    }
+    }*/
 
     private UserDO buildUserDO(String first_name, String last_name, String username, String password, String phone){
         UserDO userDO = new UserDO();
@@ -50,6 +50,7 @@ public class UserDAOTest {
         userDAO.insertUser(userDOExpected);
         int id = userDAO.getUserId(phone);
         UserDO userDOActual = userDAO.getUserById(id);
+        //System.out.println(userDOActual.getFirst_name());
         Assert.assertEquals(userDOExpected.getUsername(),userDOActual.getUsername());
         Assert.assertEquals(userDOExpected.getFirst_name(),userDOActual.getFirst_name());
         Assert.assertEquals(userDOExpected.getLast_name(),userDOActual.getLast_name());

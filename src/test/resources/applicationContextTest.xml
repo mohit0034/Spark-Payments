@@ -24,7 +24,7 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://localhost/spark"></property>
+        <property name="url" value="jdbc:mysql://10.77.168.179/spark"></property>
         <property name="username" value="root"></property>
         <property name="password" value=""></property>
     </bean>

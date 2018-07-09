@@ -47,5 +47,5 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-annotations', version: '3.4.0.GA'
     compile ("org.hibernate:hibernate-core:3.3.2.GA")
 
-    providedCompile ("log4j:log4j:1.2.17")
+    //providedCompile ("log4j:log4j:1.2.17")
 }
