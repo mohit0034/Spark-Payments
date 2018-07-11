@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+jettyRun{
+    httpPort=8080
+}
+
+group 'sparkpay'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile ("org.mockito:mockito-all:1.10.19")
+
+
+    compile group: 'org.crazycake', name: 'jdbctemplatetool', version: '1.0.4-RELEASE'
+    compile ("org.springframework:spring-context:4.3.6.RELEASE")
+    compile ("org.springframework:spring-core:4.3.6.RELEASE")
+    compile ("org.springframework:spring-beans:4.3.6.RELEASE")
+    compile ("org.springframework:spring-web:4.3.6.RELEASE")
+    compile ("org.springframework:spring-webmvc:4.3.6.RELEASE")
+    compile ("org.springframework:spring-jdbc:4.3.6.RELEASE")
+    compile ("org.springframework:spring-tx:4.3.6.RELEASE")
+
+    compile ("org.springframework:spring-test:4.3.6.RELEASE")
+    compile ("javax.servlet:jstl:1.2")
+    compile ("javax.servlet:javax.servlet-api:3.1.0")
+    compile ("javax.servlet.jsp:javax.servlet.jsp-api:2.3.1")
+    compile ("javax.transaction:jta:1.1")
+    compile ("mysql:mysql-connector-java:5.1.31")
+    compile ("com.fasterxml.jackson.core:jackson-core:2.7.1")
+    compile ("com.fasterxml.jackson.core:jackson-databind:2.7.1")
+    compile ("com.fasterxml.jackson.core:jackson-annotations:2.7.1")
+    compile ("commons-codec:commons-codec:1.9")
+    compile ("org.eclipse.jetty:jetty-server:9.2.11.v20150529")
+    compile ("org.eclipse.jetty:jetty-servlet:9.2.11.v20150529")
+    compile ("javax.validation:validation-api:1.0.0.GA")
+    compile ("org.hibernate:hibernate-validator:4.0.2.GA")
+    compile group: 'org.hibernate', name: 'hibernate-annotations', version: '3.4.0.GA'
+    compile ("org.hibernate:hibernate-core:3.3.2.GA")
+
+    //providedCompile ("log4j:log4j:1.2.17")
+}
